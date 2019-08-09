@@ -57,7 +57,7 @@ void loop() {
   }
   client.loop();
   
-  double Ax, Ay, Az;
+  double Ax, Ay, Az, A2_x, A2_y, A2_z;
   double Ax_kuadrat, Ay_kuadrat, Az_kuadrat, total_kuadrat, amplitudo, sr;
   Read_RawValue(MPU6050SlaveAddress, MPU6050_REGISTER_ACCEL_XOUT_H);
   
@@ -65,6 +65,27 @@ void loop() {
   Ax = (double)AccelX/AccelScaleFactor;
   Ay = (double)AccelY/AccelScaleFactor;
   Az = (double)AccelZ/AccelScaleFactor;
+
+  // ambil nilai accelerometer detik selanjutnya
+  delay(1000);
+
+  A2_x = (double)AccelX/AccelScaleFactor;
+  A2_y = (double)AccelY/AccelScaleFactor;
+  A2_z = (double)AccelZ/AccelScaleFactor;
+
+  Serial.println("Pertama");
+  Serial.print("Ax: "); Serial.print(Ax);
+  Serial.print("Ay: "); Serial.print(Ay);
+  Serial.print("Az: "); Serial.print(Az);
+  Serial.println();
+
+  Serial.println("Kedua");
+  Serial.print("A2_x: "); Serial.print(A2_x);
+  Serial.print("A2_y: "); Serial.print(A2_y);
+  Serial.print("A2_z: "); Serial.print(A2_z);
+  Serial.println();
+  
+  /*
   Ax_kuadrat = (double)(pow(Ax,2));
   Ay_kuadrat = (double)(pow(Ay,2));
   Az_kuadrat = (double)(pow(Az,2));
@@ -77,8 +98,8 @@ void loop() {
   Serial.print("Az: "); Serial.print(Az);
   Serial.print("Skala richter: "); Serial.println(sr);
   client.publish("tugas-akhir", dtostrf(sr,3,3,skala_richter));
+  */
   
-  delay(1000);
 }
 
 void I2C_Write(uint8_t deviceAddress, uint8_t regAddress, uint8_t data){

@@ -1,5 +1,7 @@
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
 
 // Definisi SSID dan password WiFi
 const char* ssid = "SI4007";
@@ -10,6 +12,7 @@ const char* mqtt_server = "soldier.cloudmqtt.com";
 const char* mqtt_user = "mizrsriv";
 const char* mqtt_password = "vKGsX3BGaJqa";
 
+LiquidCrystal_I2C lcd(0x27,16,2);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -43,6 +46,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for (int i = 0; i < length; i++) {
     message[i] = (char)payload[i];
   }
+
   Serial.print("Magnitude = ");
   Serial.print(message);
   Serial.println();
@@ -71,6 +75,10 @@ void setup() {
   setup_wifi();
   client.setServer(mqtt_server, 18162);
   client.setCallback(callback);
+
+  // inisiasi lcd
+  lcd.init();
+  lcd.backlight();
 }
 
 void loop() {
@@ -78,5 +86,9 @@ void loop() {
   if (!client.connected()) {
     reconnect();
   }
+
+  lcd.home();
+  lcd.print("I Love You");
+  
   client.loop();
 }
